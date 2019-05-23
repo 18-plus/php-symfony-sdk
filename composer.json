@@ -1,0 +1,22 @@
+{
+    "name": "eighteenplus/agegatesymfony",
+    "description": "18+ Age Gate for Adult Websites on Symfony",
+    "keywords": ["eighteenplus", "agegate"],
+    "homepage": "https://18plus.org",
+    "authors": [
+        {
+            "name": "***",
+            "email": "you@you.com"
+        }
+    ],
+    "version": "1.0.0",
+    "require": {
+        "eighteenplus/agegate": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "EighteenPlus\\AgeGateSymfony\\": ""
+        }
+    },
+    "minimum-stability": "dev"
+}
