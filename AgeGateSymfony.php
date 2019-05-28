@@ -19,37 +19,58 @@ class AgeGateSymfony extends Bundle
             $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         }
         
-        $title = getenv('agegate_title');
-        if (!$title) {            
-            try {            
-                $title = $this->container->getParameter('agegate_title');
-            } catch (\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException $e) {
-                $title = '';
-            }
-        }
+        $params = [
+            'agegate_title' => '',
+            'agegate_logo' => '',
+            'agegate_site_name' => '',
+            'agegate_custom_text' => '',
+            'agegate_custom_text_location' => '',
+            'agegate_background_color' => '',
+            'agegate_text_color' => '',
+            'agegate_remove_reference' => '',
+            'agegate_remove_visiting' => '',
+            'agegate_test_mode' => '',
+            'agegate_test_anyip' => '',
+            'agegate_test_ip' => '',
+            'agegate_start_from' => '',
+            'agegate_desktop_session_lifetime' => '',
+            'agegate_mobile_session_lifetime' => '',
+        ];
         
-        $testIp = getenv('agegate_test_ip');
-        if (!$testIp) {            
-            try {            
-                $testIp = $this->container->getParameter('agegate_test_ip');
-            } catch (\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException $e) {
-                $testIp = '';
-            }
-        }
-        
-        $startFrom = getenv('agegate_start_from');
-        if (!$startFrom) {            
-            try {            
-                $startFrom = $this->container->getParameter('agegate_start_from');
-            } catch (\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException $e) {
-                $startFrom = '';
+        foreach ($params as $key => &$value) {
+            $value = getenv($key);
+            if (!$value) {
+                try {            
+                    $value = $this->container->getParameter($key);
+                } catch (\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException $e) {
+                    $value = '';
+                }
             }
         }
         
         $gate = new AgeGate($baseUrl);
-        $gate->setTitle($title);
-        $gate->setTestIp($testIp);
-        $gate->setStartFrom($startFrom);
+        $gate->setTitle($params['agegate_title']);
+        $gate->setLogo($params['agegate_logo']);
+        
+        $gate->setSiteName($params['agegate_site_name']);
+        $gate->setCustomText($params['agegate_custom_text']);
+        $gate->setCustomLocation($params['agegate_custom_text_location']);
+        
+        $gate->setBackgroundColor($params['agegate_background_color']);
+        $gate->setTextColor($params['agegate_text_color']);
+        
+        $gate->setRemoveReference($params['agegate_remove_reference']);
+        $gate->setRemoveVisiting($params['agegate_remove_visiting']);
+        
+        $gate->setTestMode($params['agegate_test_mode']);
+        $gate->setTestAnyIp($params['agegate_test_anyip']);
+        $gate->setTestIp($params['agegate_test_ip']);
+        
+        $gate->setStartFrom($params['agegate_start_from']);
+        
+        $gate->setDesktopSessionLifetime($params['agegate_desktop_session_lifetime']);
+        $gate->setMobileSessionLifetime($params['agegate_mobile_session_lifetime']);
+        
         $gate->run();
     }
 }
